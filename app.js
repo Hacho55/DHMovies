@@ -144,6 +144,12 @@ const movies = [
 	}
 ];
 
+let totalPelis = movies.length;
+let titulosPelis = movies.map(movie => movie.title);
+let pelisOrdenadas = titulosPelis.sort().join('\n');
+
+
+
 const faqs = [
 	{
 		faq_title: "¿A partir de qué edad los niños deben pagar entrada?",
@@ -194,6 +200,7 @@ const theaters = [
 	}
 ];
 
+
 // Servidor
 http.createServer((req, res) => {
 	res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -202,7 +209,20 @@ http.createServer((req, res) => {
 	switch (req.url) {
 		// Home
 		case '/':
-			res.end('Home');
+            res.end(`Bienvenidos a DH Movies
+            el mejor sitio para encontrar las mejores películas,
+            incluso mucho mejor que Netflix, Cuevana y PopCorn​.
+            
+            Total de peliculas en cartelera: ${totalPelis}
+            Listado de peliculas:
+            ${pelisOrdenadas}
+
+            Recordá que podes visitar las secciones:
+            En cartelera
+            Más votadas
+            Sucursales
+            Contacto
+            Preguntas frecuentes`);
 			break;
 		// En cartelera
 		case '/en-cartelera':
