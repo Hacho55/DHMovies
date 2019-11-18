@@ -144,11 +144,29 @@ const movies = [
 	}
 ];
 
+
+//Variables creadas para la presentacion de textos
+
 let totalPelis = movies.length;
 let titulosPelis = movies.map(movie => movie.title);
 let pelisOrdenadas = titulosPelis.sort().join('\n');
 
+let listadoPelis = movies.map(movie => [movie.title, movie.overview]);
 
+let listadoPelisDividido = listadoPelis.map(movie => movie.join('\n')).join('\n\n');
+
+let masVotadas = movies.filter(movie => movie.vote_average >= 7);
+let puntajes = masVotadas.map(movie => movie.vote_average);
+
+let sumaPuntajes = puntajes.reduce((anterior, actual) => actual += anterior);
+let puntajePromedio = (sumaPuntajes / puntajes.length).toFixed(1);
+
+let cantMasVotadas = masVotadas.length;
+
+let datosMasVotadas = masVotadas.map(movie => [movie.title, movie.vote_average, movie.overview]);
+let listaMasVotadas = datosMasVotadas.map(movie => movie.join('\n')).join('\n\n');
+
+//Hasta aqui las variables creadas
 
 const faqs = [
 	{
@@ -226,16 +244,35 @@ http.createServer((req, res) => {
 			break;
 		// En cartelera
 		case '/en-cartelera':
-			res.end('En cartelera');
+			res.end(`
+			En cartelera
+			Total de peliculas: ${totalPelis}
+			Listado de peliculas:
+
+			${listadoPelisDividido}`);
 			break;
 		case '/mas-votadas':
-			res.end('Más Votadas');
+			res.end(`
+			Más votadas
+			Total de películas: ${cantMasVotadas}
+			Rating promedio: ${puntajePromedio}
+			Listado de películas:
+			${listaMasVotadas}`);
 			break;
 		case '/sucursales':
 			res.end('Sucursales');
 			break;
 		case '/contacto':
-			res.end('Contacto');
+			res.end(`
+			Contáctanos
+			
+			​¿Tenés algo para contarnos? Nos encanta escuchar a nuestros
+clientes. Si deseas contactarnos podés escribirnos al siguiente email:
+dhmovies@digitalhouse.com o en las redes sociales. Envianos tu consulta,
+sugerencia o reclamo y será respondido a la brevedad posible. Recordá que
+también podes consultar la sección de Preguntas Frecuentes para obtener
+respuestas inmediatas a los problemas más comunes.
+			`);
 			break;
 		case '/preguntas-frecuentes':
 			res.end('Preguntas Frecuentes');
