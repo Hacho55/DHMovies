@@ -191,6 +191,13 @@ const faqs = [
 	}
 ];
 
+//Variables creadas para la presentacion de textos
+let totalFaqs = faqs.length;
+
+let listadoFaqs = faqs.map(faqs => [faqs.faq_title, faqs.faq_answer]);
+
+let listadoFaqsDividido = listadoFaqs.map(faqs => faqs.join('\n')).join('\n\n');
+
 const theaters = [
 	{
 		name: "DH Multiplex - Brisas del Volador",
@@ -218,6 +225,14 @@ const theaters = [
 	}
 ];
 
+//Variables creadas para la presentacion de textos
+	let totalSalas = theaters.reduce(function(prev, cur){
+		return prev + cur.total_rooms;
+	}, 0);
+
+	let listadoSalas = theaters.map(theaters => [theaters.name, theaters.address, theaters.description]);
+
+	let listadoSalasDividido = listadoSalas.map(theaters => theaters.join('\n')).join('\n\n');
 
 // Servidor
 http.createServer((req, res) => {
@@ -227,46 +242,61 @@ http.createServer((req, res) => {
 	switch (req.url) {
 		// Home
 		case '/':
-            res.end(`Bienvenidos a DH Movies
-            el mejor sitio para encontrar las mejores películas,
-            incluso mucho mejor que Netflix, Cuevana y PopCorn​.
+			res.end(`Bienvenidos a DH Movies 
+el mejor sitio para encontrar las mejores películas,
+incluso mucho mejor que Netflix, Cuevana y PopCorn​.
             
-            Total de peliculas en cartelera: ${totalPelis}
-            Listado de peliculas:
-            ${pelisOrdenadas}
+Total de peliculas en cartelera: ${totalPelis}
+Listado de peliculas:
+${pelisOrdenadas}
 
-            Recordá que podes visitar las secciones:
-            En cartelera
-            Más votadas
-            Sucursales
-            Contacto
-            Preguntas frecuentes`);
+Recordá que podes visitar las secciones:
+En cartelera
+Más votadas
+Sucursales
+Contacto
+Preguntas frecuentes`);
 			break;
 		// En cartelera
 		case '/en-cartelera':
 			res.end(`
-			En cartelera
-			Total de peliculas: ${totalPelis}
-			Listado de peliculas:
+	En cartelera
 
-			${listadoPelisDividido}`);
+Total de peliculas: ${totalPelis}
+
+Listado de peliculas:
+
+${listadoPelisDividido}`);
 			break;
+		// Mas votadas
 		case '/mas-votadas':
 			res.end(`
-			Más votadas
-			Total de películas: ${cantMasVotadas}
-			Rating promedio: ${puntajePromedio}
-			Listado de películas:
-			${listaMasVotadas}`);
+	Más votadas
+
+Total de películas: ${cantMasVotadas}
+
+Rating promedio: ${puntajePromedio}
+
+Listado de películas:
+${listaMasVotadas}`);
 			break;
+		//Sucursales
 		case '/sucursales':
-			res.end('Sucursales');
+			res.end(`
+	Nuestras Salas.
+
+Total de salas: ${totalSalas}
+
+Listado de salas: 
+
+${listadoSalasDividido}`);
 			break;
+		//Contacto
 		case '/contacto':
 			res.end(`
-			Contáctanos
+	Contáctanos
 			
-			​¿Tenés algo para contarnos? Nos encanta escuchar a nuestros
+​¿Tenés algo para contarnos? Nos encanta escuchar a nuestros
 clientes. Si deseas contactarnos podés escribirnos al siguiente email:
 dhmovies@digitalhouse.com o en las redes sociales. Envianos tu consulta,
 sugerencia o reclamo y será respondido a la brevedad posible. Recordá que
@@ -274,9 +304,18 @@ también podes consultar la sección de Preguntas Frecuentes para obtener
 respuestas inmediatas a los problemas más comunes.
 			`);
 			break;
+		//Preguntas Frecuentes
 		case '/preguntas-frecuentes':
-			res.end('Preguntas Frecuentes');
+			res.end(`
+		Preguntas Frecuentes
+
+Total de Preguntas: ${totalFaqs}
+
+Listado de Preguntas:
+
+${listadoFaqsDividido}`);
 			break;
+		//404
 		default:
 			res.end('404 not found')
 	}
